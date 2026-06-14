@@ -1,0 +1,47 @@
+{
+  "profile": {
+    "name": "好物推荐",
+    "avatar": "",
+    "bio": ""
+  },
+  "links": [
+    {
+      "id": "a1b2c3d4-1",
+      "title": "智能蓝牙耳机 Pro Max",
+      "image": "https://picsum.photos/seed/product1/600/400",
+      "url": "https://example.com/product/1",
+      "sortOrder": 3,
+      "createdAt": "2024-03-15T10:30:00Z"
+    },
+    {
+      "id": "a1b2c3d4-2",
+      "title": "便携式充电宝 20000mAh",
+      "image": "https://picsum.photos/seed/product2/600/400",
+      "url": "https://example.com/product/2",
+      "sortOrder": 2,
+      "createdAt": "2024-03-14T08:00:00Z"
+    },
+    {
+      "id": "a1b2c3d4-3",
+      "title": "舒适人体工学椅",
+      "image": "https://picsum.photos/seed/product3/600/400",
+      "url": "https://example.com/product/3",
+      "sortOrder": 1,
+      "createdAt": "2024-03-13T14:20:00Z"
+    },
+    {
+      "id": "a1b2c3d4-4",
+      "title": "极简桌面收纳套装",
+      "image": "https://picsum.photos/seed/product4/600/400",
+      "url": "https://example.com/product/4",
+      "sortOrder": 0,
+      "createdAt": "2024-03-12T09:00:00Z"
+    }
+  ],
+  "theme": {
+    "bgColor": "#f8f9fa",
+    "cardBg": "#ffffff",
+    "textColor": "#1a1a2e",
+    "primaryColor": "#ff4757"
+  }
+}
