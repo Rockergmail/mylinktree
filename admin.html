@@ -20,9 +20,15 @@
 
     /* ========== Layout ========== */
     .admin-wrap {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
     }
+    .admin-left { min-width: 0; }
+    .admin-right { min-width: 0; }
 
     /* ========== Header ========== */
     .admin-header {
@@ -257,7 +263,55 @@
       font-size: 0.9rem;
     }
 
+    /* ========== JSON Preview Panel ========== */
+    .json-preview {
+      height: fit-content;
+    }
+    .json-preview .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .json-preview .section-title .badge {
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: #999;
+      background: #f0f2f5;
+      padding: 2px 10px;
+      border-radius: 10px;
+    }
+    .json-preview .json-content {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      overflow: auto;
+      max-height: 55vh;
+      white-space: pre;
+      tab-size: 2;
+      word-break: normal;
+      word-wrap: normal;
+    }
+    .json-preview .json-content .placeholder {
+      color: #6c7086;
+      font-style: italic;
+    }
+    .json-preview .btn-row {
+      margin-top: 12px;
+    }
+    .json-preview .btn-row .btn {
+      flex: 1;
+    }
+
     /* ========== Responsive ========== */
+    @media (max-width: 768px) {
+      .admin-wrap {
+        grid-template-columns: 1fr;
+      }
+    }
     @media (max-width: 480px) {
       body { padding: 10px; }
       .section { padding: 16px; }
@@ -272,63 +326,85 @@
 
 <div class="admin-wrap">
 
-  <!-- Header -->
-  <div class="admin-header">
-    <h1>LinkPro 管理后台</h1>
-    <div class="sub">编辑数据 → 导出 JSON → 替换本地文件 → 推送部署</div>
-  </div>
+  <!-- ===== Left Column: Forms ===== -->
+  <div class="admin-left">
 
-  <!-- Section: Brand & Theme -->
-  <div class="section">
-    <div class="section-title">品牌与主题</div>
-    <div class="form-row">
-      <label>品牌名称</label>
-      <input type="text" id="brandName" placeholder="例：好物推荐" />
+    <!-- Header -->
+    <div class="admin-header">
+      <h1>LinkPro 管理后台</h1>
+      <div class="sub">编辑数据 → 生成 JSON → 替换本地文件 → 推送部署</div>
     </div>
-    <div class="color-grid">
-      <div class="color-item">
-        <label>背景色</label>
-        <input type="color" id="bgColor" value="#f8f9fa" />
-        <span class="hex-val" id="bgColorHex">#f8f9fa</span>
-      </div>
-      <div class="color-item">
-        <label>卡片色</label>
-        <input type="color" id="cardBg" value="#ffffff" />
-        <span class="hex-val" id="cardBgHex">#ffffff</span>
-      </div>
-      <div class="color-item">
-        <label>文字色</label>
-        <input type="color" id="textColor" value="#1a1a2e" />
-        <span class="hex-val" id="textColorHex">#1a1a2e</span>
-      </div>
-      <div class="color-item">
-        <label>主题色</label>
-        <input type="color" id="primaryColor" value="#ff4757" />
-        <span class="hex-val" id="primaryColorHex">#ff4757</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- Section: Products -->
-  <div class="section">
-    <div class="section-title">商品管理</div>
-    <ul class="product-list" id="productList"></ul>
-    <div style="margin-top:12px;">
-      <button class="btn btn-primary" id="btnAdd">+ 添加商品</button>
+    <!-- Section: Brand & Theme -->
+    <div class="section">
+      <div class="section-title">品牌与主题</div>
+      <div class="form-row">
+        <label>品牌名称</label>
+        <input type="text" id="brandName" placeholder="例：Get Lucky" />
+      </div>
+      <div class="color-grid">
+        <div class="color-item">
+          <label>背景色</label>
+          <input type="color" id="bgColor" value="#f8f9fa" />
+          <span class="hex-val" id="bgColorHex">#f8f9fa</span>
+        </div>
+        <div class="color-item">
+          <label>卡片色</label>
+          <input type="color" id="cardBg" value="#ffffff" />
+          <span class="hex-val" id="cardBgHex">#ffffff</span>
+        </div>
+        <div class="color-item">
+          <label>文字色</label>
+          <input type="color" id="textColor" value="#1a1a2e" />
+          <span class="hex-val" id="textColorHex">#1a1a2e</span>
+        </div>
+        <div class="color-item">
+          <label>主题色</label>
+          <input type="color" id="primaryColor" value="#ff4757" />
+          <span class="hex-val" id="primaryColorHex">#ff4757</span>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- Section: Actions -->
-  <div class="section">
-    <div class="section-title">数据操作</div>
-    <p style="font-size:0.85rem;color:#888;margin-bottom:12px;">
-      导出 JSON 后，替换项目中的 <code>data/profile.json</code>，然后 git commit + push 即可自动部署。
-    </p>
-    <div class="btn-row">
-      <button class="btn btn-success" id="btnExport">📥 导出 JSON</button>
-      <button class="btn btn-secondary" id="btnReset">🔄 重置为示例数据</button>
+    <!-- Section: Products -->
+    <div class="section">
+      <div class="section-title">商品管理</div>
+      <ul class="product-list" id="productList"></ul>
+      <div style="margin-top:12px;">
+        <button class="btn btn-primary" id="btnAdd">+ 添加商品</button>
+      </div>
+    </div>
+
+    <!-- Section: Actions -->
+    <div class="section">
+      <div class="section-title">数据操作</div>
+      <p style="font-size:0.85rem;color:#888;margin-bottom:12px;">
+        点击「生成 JSON」在右侧预览，确认后可复制或下载替换 <code>data/profile.json</code>，然后 git commit + push 即可自动部署。
+      </p>
+      <div class="btn-row">
+        <button class="btn btn-success" id="btnExport">📥 生成 JSON</button>
+        <button class="btn btn-secondary" id="btnReset">🔄 重置为示例数据</button>
+      </div>
+    </div>
+
+  </div>
+  <!-- ===== Left Column End ===== -->
+
+  <!-- ===== Right Column: JSON Preview ===== -->
+  <div class="admin-right">
+    <div class="section json-preview" id="jsonPreviewSection">
+      <div class="section-title">
+        JSON 预览
+        <span class="badge" id="jsonCharCount">0 字符</span>
+      </div>
+      <div class="json-content" id="jsonPreviewContent"><span class="placeholder">点击左侧「生成 JSON」按钮预览</span></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btnCopyJSON">📋 复制 JSON</button>
+        <button class="btn btn-success" id="btnDownloadJSON">📥 下载 JSON</button>
+      </div>
     </div>
   </div>
+  <!-- ===== Right Column End ===== -->
 
 </div>
 
@@ -383,6 +459,11 @@
     const btnAdd         = $('btnAdd');
     const btnExport      = $('btnExport');
     const btnReset       = $('btnReset');
+
+    const jsonPreviewContent = $('jsonPreviewContent');
+    const jsonCharCount      = $('jsonCharCount');
+    const btnCopyJSON        = $('btnCopyJSON');
+    const btnDownloadJSON    = $('btnDownloadJSON');
 
     const modal          = $('modal');
     const modalTitle     = $('modalTitle');
@@ -603,16 +684,44 @@
       editingId = null;
     }
 
-    // ========== Export JSON ==========
-    function exportJSON() {
+    // ========== Get JSON string from current data ==========
+    function getJSONString() {
       collectUI();
-
-      // Clean up: remove empty avatar/bio fields from profile for cleaner output
       const exportData = JSON.parse(JSON.stringify(data));
+      return JSON.stringify(exportData, null, 2);
+    }
 
-      // Build output with clean formatting
-      const jsonStr = JSON.stringify(exportData, null, 2);
+    // ========== Render JSON Preview ==========
+    function renderJSONPreview() {
+      const jsonStr = getJSONString();
+      jsonPreviewContent.textContent = jsonStr;
+      jsonPreviewContent.className = 'json-content'; // remove placeholder style
+      jsonCharCount.textContent = `${jsonStr.length} 字符 · ${jsonStr.split('\n').length} 行`;
+      toastShow('✅ JSON 已生成，可在右侧预览');
+    }
 
+    // ========== Copy JSON ==========
+    function copyJSON() {
+      const jsonStr = getJSONString();
+      navigator.clipboard.writeText(jsonStr).then(() => {
+        toastShow('📋 JSON 已复制到剪贴板');
+      }).catch(() => {
+        // Fallback for older browsers
+        const ta = document.createElement('textarea');
+        ta.value = jsonStr;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        toastShow('📋 JSON 已复制到剪贴板');
+      });
+    }
+
+    // ========== Download JSON ==========
+    function downloadJSON() {
+      const jsonStr = getJSONString();
       const blob = new Blob([jsonStr], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -621,8 +730,7 @@
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(a.href);
-
-      toastShow('✅ JSON 已导出，替换到 data/profile.json 即可');
+      toastShow('✅ JSON 已下载，替换到 data/profile.json 即可');
     }
 
     // ========== Reset ==========
@@ -655,8 +763,10 @@
     formSave.addEventListener('click', saveForm);
     formCancel.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-    btnExport.addEventListener('click', exportJSON);
+    btnExport.addEventListener('click', renderJSONPreview);
     btnReset.addEventListener('click', resetData);
+    btnCopyJSON.addEventListener('click', copyJSON);
+    btnDownloadJSON.addEventListener('click', downloadJSON);
 
     // Enter key in modal
     [formTitle, formImage, formUrl, formSort].forEach(el => {
